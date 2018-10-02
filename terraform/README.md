@@ -6,6 +6,8 @@ Deployment script for data analytics platform based on Terraform.
 
 Azure command line installed and user authenticated
 
+Terraform installed
+
 # Setup
 
 Create an Azure Service principal RBAC user with Contributor role 
@@ -32,7 +34,21 @@ azure_subscription_id = "your_subscription_id_from_script_execution"
 azure_client_id       = "your_client_id_from_script_execution"
 azure_client_secret   = "your_client_secret_from_script_execution"
 azure_tenant_id       = "your_tenant_id_from_script_execution"
+ssh_public_key        = "usually-your-home-directory/.ssh/id_rsa.pub"
 ```
+
+You might also want to add the following variables, to create a unique deployment:
+```
+resource_group_name   = "INSERT_SOMETHING, but only alphanumeric and hyphens"
+dns_prefix            = "INSERT_SOMETHING"
+cluster_name          = "INSERT_SOMETHING,"
+jenkins_rg_name       = "INSERT_SOMETHIN, but only alphanumeric and underscores "
+```
+
+Run
+`terraform init`
+to download the azure terraform provider
+
 
 Run 
 `terraform plan -out run.plan`
@@ -54,7 +70,8 @@ terraform apply "run.plan"
 
 This take few minutes to complete...
 
-Let's check that our cluster is up and running (Terraform output variable will contains the raw configuration of the newly created Kubernetes cluster)
+Let's check that our cluster is up and running (Terraform output variable will contains the raw configuration of the newly created Kubernetes cluster).
+You might need to disable the equinor proxy enviornment variables first. 
 
 ```
 echo "$(terraform output kube_config)" > ~/.kube/kubeflow
