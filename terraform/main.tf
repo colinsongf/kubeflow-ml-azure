@@ -47,7 +47,7 @@ output "host" {
 }
 
 resource "azurerm_container_registry" "acr" {
-  name                = "azcore"
+  name                = "${replace(azurerm_resource_group.dcoe_rg.name, "-", "")}acr"
   resource_group_name = "${azurerm_resource_group.dcoe_rg.name}"
   location            = "${azurerm_resource_group.dcoe_rg.location}"
   sku                 = "standard"
@@ -55,7 +55,7 @@ resource "azurerm_container_registry" "acr" {
 
 # Storage account for AKS cluster
 resource "azurerm_storage_account" "storageac" {
-  name                     = "dcoestorageac"
+  name                     = "${replace(azurerm_resource_group.dcoe_rg.name, "-", "")}dcoesac"
   resource_group_name      = "${azurerm_kubernetes_cluster.k8s.node_resource_group}"
   location                 = "${azurerm_resource_group.dcoe_rg.location}"
   account_tier             = "Standard"
@@ -114,7 +114,7 @@ resource "azurerm_resource_group" "jenkins_rg_name" {
 
 # Storage account for AKS cluster
 resource "azurerm_storage_account" "jenkinsstorageac" {
-  name                     = "jenkinsstorageac"
+  name                     = "${replace(azurerm_resource_group.jenkins_rg_name.name, "_","")}jstoracc"
   resource_group_name      = "${azurerm_resource_group.jenkins_rg_name.name}"
   location                 = "${azurerm_resource_group.jenkins_rg_name.location}"
   account_tier             = "Standard"
