@@ -1,4 +1,4 @@
-# thd-platform
+# kubeflow-ml-azure
 
 Deployment script for data analytics platform based on Terraform. 
 
