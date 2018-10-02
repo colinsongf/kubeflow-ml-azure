@@ -60,7 +60,8 @@ terraform apply "run.plan"
 
 This take few minutes to complete...
 
-Let's check that our cluster is up and running (Terraform output variable will contains the raw configuration of the newly created Kubernetes cluster)
+Let's check that our cluster is up and running (Terraform output variable will contains the raw configuration of the newly created Kubernetes cluster).
+You might need to disable the equinor proxy enviornment variables first. 
 
 ```
 echo "$(terraform output kube_config)" > ~/.kube/kubeflow
