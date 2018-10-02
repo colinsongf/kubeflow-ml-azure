@@ -136,3 +136,12 @@ resource "azurerm_virtual_network" "jenkinsvn" {
     environment = "jenkins"
   }
 }
+
+resource "template_dir" "azure_file_sc" {
+  source_dir      = "${path.module}/templates"
+  destination_dir = "${path.cwd}/rendered"
+
+  vars {
+    storage_account = "${azurerm_storage_account.storageac.name}"
+  }
+}
