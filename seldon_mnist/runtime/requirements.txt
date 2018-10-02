@@ -1,0 +1,11 @@
+scipy
+scikit-learn>=0.18
+six
+ipython
+jupyter
+protobuf
+numpy
+requests
+grpcio-tools
+graphviz
+matplotlib

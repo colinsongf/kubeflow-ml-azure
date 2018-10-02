@@ -1,0 +1,24 @@
+apiVersion: "batch/v1"
+kind: "Job"
+metadata:
+  name: "mnist-sk-learn"
+  namespace: "kubeflow"
+spec:
+  template:
+    metadata:
+      name: "mnist-sk-learn"
+    spec:
+      containers:
+        -
+          image: "azcore.azurecr.io/dev/mnist_sk_learn:0.2"
+          name: "mnist-sk-learn"
+          volumeMounts:
+            -
+              mountPath: "/data"
+              name: "volume"
+      restartPolicy: "Never"
+      volumes:
+        -
+          name: "volume"
+          persistentVolumeClaim:
+            claimName: "azurefile"

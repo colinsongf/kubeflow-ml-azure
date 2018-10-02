@@ -1,0 +1,9 @@
+terraform/*.tfvars
+.idea
+.keys
+terraform/.terraform
+*.iml
+terraform/*.tfstate.*
+terraform/*.tfstate
+terraform/run.plan
+kubeflow/kubeflow

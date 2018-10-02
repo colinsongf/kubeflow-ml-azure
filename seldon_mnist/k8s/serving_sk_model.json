@@ -1,0 +1,72 @@
+{
+  "apiVersion": "machinelearning.seldon.io/v1alpha2",
+  "kind": "SeldonDeployment",
+  "metadata": {
+    "labels": {
+      "app": "mnist-sk"
+    },
+    "name": "mnist-sk-deployment",
+    "namespace": "kubeflow"
+  },
+  "spec": {
+    "annotations": {
+      "project_name": "Mnist classification",
+      "deployment_version": "0.1"
+    },
+    "name": "mnist-sk-deployment",
+    "oauth_key": "oauth-key",
+    "oauth_secret": "oauth-secret",
+    "predictors": [
+      {
+        "componentSpecs": [
+          {
+            "spec": {
+              "containers": [
+                {
+                  "image": "azcore.azurecr.io/dev/mnist-sk:0.1",
+                  "imagePullPolicy": "IfNotPresent",
+                  "name": "mnist-sk-classifier",
+                  "volumeMounts": [
+                    {
+                      "mountPath": "/data",
+                      "name": "volume"
+                    }
+                  ],
+                  "resources": {
+                    "requests": {
+                      "memory": "5Mi"
+                    }
+                  }
+                }
+              ],
+              "terminationGracePeriodSeconds": 20,
+              "volumes": [
+                {
+                  "name": "volume",
+                  "volumeSource": {
+                    "persistentVolumeClaim": {
+                      "claimName": "azurefile"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "graph": {
+          "children": [],
+          "name": "mnist-sk-classifier",
+          "endpoint": {
+            "type": "REST"
+          },
+          "type": "MODEL"
+        },
+        "name": "mnist-sk-predictor",
+        "replicas": 1,
+        "annotations": {
+          "predictor_version": "0.1"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "apiVersion": "machinelearning.seldon.io/v1alpha2",
+  "kind": "SeldonDeployment",
+  "metadata": {
+    "labels": {
+      "app": "seldon"
+    },
+    "name": "mnist-sk-ab-deployment"
+  },
+  "spec": {
+    "name": "mnist-sk-ab-deployment",
+    "oauth_key": "oauth-key",
+    "oauth_secret": "oauth-secret",
+    "predictors": [
+      {
+        "componentSpecs": [
+          {
+            "spec": {
+              "containers": [
+                {
+                  "image": "azcore.azurecr.io/dev/mnist-sk:0.1",
+                  "imagePullPolicy": "IfNotPresent",
+                  "name": "mnist-sk-rf-classifier",
+                  "volumeMounts": [
+                    {
+                      "mountPath": "/data",
+                      "name": "volume"
+                    }
+                  ],
+                  "resources": {
+                    "requests": {
+                      "memory": "5Mi"
+                    }
+                  }
+                }
+              ],
+              "terminationGracePeriodSeconds": 20,
+              "volumes": [
+                {
+                  "name": "volume",
+                  "volumeSource": {
+                    "persistentVolumeClaim": {
+                      "claimName": "azurefile"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "metadata": {
+              "labels": {
+                "version": "v2"
+              }
+            },
+            "spec": {
+              "containers": [
+                {
+                  "image": "azcore.azurecr.io/dev/mnist-sk-gb:0.1",
+                  "imagePullPolicy": "IfNotPresent",
+                  "name": "mnist-sk-gb-classifier",
+                  "volumeMounts": [
+                    {
+                      "mountPath": "/data",
+                      "name": "volume"
+                    }
+                  ],
+                  "resources": {
+                    "requests": {
+                      "memory": "5Mi"
+                    }
+                  }
+                }
+              ],
+              "terminationGracePeriodSeconds": 20,
+              "volumes": [
+                {
+                  "name": "volume",
+                  "volumeSource": {
+                    "persistentVolumeClaim": {
+                      "claimName": "azurefile"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "name": "abtest",
+        "replicas": 1,
+        "annotations": {
+          "predictor_version": "v1"
+        },
+        "graph": {
+          "name": "random-ab-test",
+          "endpoint": {},
+          "implementation": "RANDOM_ABTEST",
+          "parameters": [
+            {
+              "name": "ratioA",
+              "value": "0.5",
+              "type": "FLOAT"
+            }
+          ],
+          "children": [
+            {
+              "name": "mnist-sk-rf-classifier",
+              "endpoint": {
+                "type": "REST"
+              },
+              "type": "MODEL",
+              "children": []
+            },
+            {
+              "name": "mnist-sk-gb-classifier",
+              "endpoint": {
+                "type": "REST"
+              },
+              "type": "MODEL",
+              "children": []
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "apiVersion": "machinelearning.seldon.io/v1alpha1",
+  "kind": "SeldonDeployment",
+  "metadata": {
+    "labels": {
+      "app": "seldon"
+    },
+    "name": "xgboost-ames"
+  },
+  "spec": {
+    "annotations": {
+      "deployment_version": "v1",
+      "project_name": "ames"
+    },
+    "name": "housingserve",
+    "predictors": [
+      {
+        "annotations": {
+          "predictor_version": "v1"
+        },
+        "componentSpec": {
+          "spec": {
+            "containers": [
+              {
+                "image": "azcore.azurecr.io/dev/housingserve:0.2",
+                "imagePullPolicy": "Always",
+                "name": "housingserve",
+                "volumeMounts": [
+                  {
+                    "mountPath": "/mnt/xgboost",
+                    "name": "volume"
+                  }
+                ],
+                "resources": {
+                  "requests": {
+                    "memory": "10Mi"
+                  }
+                }
+              }
+            ],
+            "terminationGracePeriodSeconds": 1,
+            "volumes": [
+              {
+                "name": "volume",
+                "volumeSource": {
+                  "persistentVolumeClaim": {
+                    "claimName": "azurefile"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "graph": {
+          "children": [],
+          "endpoint": {
+            "type": "REST"
+          },
+          "name": "housingserve",
+          "type": "MODEL"
+        },
+        "name": "housingserve",
+        "replicas": 1
+      }
+    ]
+  }
+}

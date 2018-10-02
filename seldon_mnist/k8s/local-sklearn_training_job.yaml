@@ -1,0 +1,24 @@
+apiVersion: "batch/v1"
+kind: "Job"
+metadata:
+  name: "mnist-sk-train"
+spec:
+  template:
+    metadata:
+      name: "mnist-sk-train"
+    spec:
+      containers:
+        -
+          image: "mnist_sk_boost_learn:0.3"
+          name: "mnist-sk-train"
+          volumeMounts:
+            -
+              mountPath: "/data"
+              name: "task-pv-storage"
+      restartPolicy: "Never"
+      volumes:
+        -
+          name: "task-pv-storage"
+          persistentVolumeClaim:
+            claimName: "task-pv-claim"
+
