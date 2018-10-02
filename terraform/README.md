@@ -6,6 +6,8 @@ Deployment script for data analytics platform based on Terraform.
 
 Azure command line installed and user authenticated
 
+Terraform installed
+
 # Setup
 
 Create an Azure Service principal RBAC user with Contributor role 
@@ -33,6 +35,10 @@ azure_client_id       = "your_client_id_from_script_execution"
 azure_client_secret   = "your_client_secret_from_script_execution"
 azure_tenant_id       = "your_tenant_id_from_script_execution"
 ```
+Run
+`terraform init`
+to download the azure terraform provider
+
 
 Run 
 `terraform plan -out run.plan`
