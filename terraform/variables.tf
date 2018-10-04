@@ -13,6 +13,10 @@ variable "location" {
 }
 
 # Kubernetes variables
+variable "kubernetes_version" {
+  default = "1.10.8"
+}
+
 variable "agent_count" {
   default = "5"
 }
