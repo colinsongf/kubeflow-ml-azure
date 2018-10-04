@@ -5,6 +5,10 @@
 brew install kubernetes-helm
 `
 
+or download the appropriate binary from https://github.com/helm/helm/releases
+and place it on your PATH.
+
+
 # Helm install in kubernetes
 Create tiller service account and give it cluster admin role
 ```
@@ -32,11 +36,16 @@ kubectl config set-context kubeflow --namespace=kubeflow
 
 
 # Install kubeflow with ksonnet
-Init kubeflow
-`
+Install ksonnet by e.g. downloading binary from https://github.com/ksonnet/ksonnet/releases
+and place it in the PATH.
+
+Init kubeflow. You might have to ensure that equinor proxy env is activated before doing this.
+```
 ks init kubeflow
 cd kubeflow
-`
+```
+
+
 Add registry with latest tag verion
 `
 ks registry add kubeflow https://github.com/kubeflow/kubeflow/tree/v0.2.5/kubeflow
