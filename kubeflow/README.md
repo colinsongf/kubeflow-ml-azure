@@ -115,8 +115,8 @@ use any username and leave password blank (Ideally we add LDAP authentication to
 # Storage Class
 Make sure you have an storage account created in your azure resource group, see in terraform main `azurerm_storage_account`
 
-Create storage class `kubectl apply -f azure-file-sc.yaml`
-
+Create storage class 
+`kubectl apply -f  ../../terraform/rendered/azure-file-sc.yaml`
 
 Create a cluster role and binding
 
