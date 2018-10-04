@@ -87,6 +87,8 @@ ks pkg install kubeflow/tf-serving
 ks pkg install kubeflow/tf-job
 ```
 
+If you get errors `403 API rate limit exceeded ` from github then create a personal access token and store
+it as an enviornment variable, as described in https://github.com/ksonnet/ksonnet/blob/master/docs/troubleshooting.md#github-rate-limiting-errors
 
 ```
 ks generate core kubeflow-core --name=kubeflow-core --namespace=kubeflow
