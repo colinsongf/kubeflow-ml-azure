@@ -1,4 +1,4 @@
-# create a resource group 
+# create a resource group
 resource "azurerm_resource_group" "dcoe_rg" {
   name     = "${var.resource_group_name}"
   location = "${var.location}"
@@ -37,14 +37,6 @@ resource "azurerm_kubernetes_cluster" "k8s" {
   tags {
     Environment = "Development"
   }
-}
-
-output "kube_config" {
-  value = "${azurerm_kubernetes_cluster.k8s.kube_config_raw}"
-}
-
-output "host" {
-  value = "${azurerm_kubernetes_cluster.k8s.kube_config.0.host}"
 }
 
 resource "azurerm_container_registry" "acr" {
@@ -136,3 +128,29 @@ resource "azurerm_virtual_network" "jenkinsvn" {
     environment = "jenkins"
   }
 }
+
+resource "template_dir" "azure_file_sc" {
+  source_dir      = "${path.module}/templates"
+  destination_dir = "${path.cwd}/rendered"
+
+  vars {
+    storage_account = "${azurerm_storage_account.storageac.name}"
+  }
+}
+
+output "kube_config" {
+  value = "${azurerm_kubernetes_cluster.k8s.kube_config_raw}"
+}
+
+output "host" {
+  value = "${azurerm_kubernetes_cluster.k8s.kube_config.0.host}"
+}
+
+output "container registry name" {
+  value = "${azurerm_container_registry.acr.name}"
+}
+
+output "storrage account name" {
+  value = "${azurerm_storage_account.storageac.name}"
+}
+
